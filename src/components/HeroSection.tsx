@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { ChevronDown, Download, Mail } from 'lucide-react';
-import profileImage from '@/assets/profile-enhanced.png';
+import profileImage from '@/assets/profile-photo.jpeg';
 
 const HeroSection = () => {
   const floatingShapes = [
