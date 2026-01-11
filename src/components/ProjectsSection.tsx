@@ -1,63 +1,109 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
-import { ExternalLink, Github, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useRef, useState, useEffect } from 'react';
+import { ExternalLink, Github, ChevronLeft, ChevronRight, FolderOpen } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
-const projects = [
-  {
-    title: 'SecureVault Pro',
-    category: 'Cybersecurity',
-    description: 'Enterprise-grade password management and security audit tool with AI-powered vulnerability detection.',
-    image: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800&h=600&fit=crop',
-    technologies: ['Python', 'React', 'PostgreSQL', 'Docker'],
-    color: 'primary',
-  },
-  {
-    title: 'AI Content Studio',
-    category: 'AI Application',
-    description: 'Intelligent content generation platform powered by GPT-4 with custom training capabilities.',
-    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop',
-    technologies: ['Next.js', 'OpenAI', 'TypeScript', 'MongoDB'],
-    color: 'secondary',
-  },
-  {
-    title: 'CyberDefend Dashboard',
-    category: 'Security Tool',
-    description: 'Real-time network monitoring and threat detection system with automated response protocols.',
-    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop',
-    technologies: ['React', 'Node.js', 'WebSocket', 'Redis'],
-    color: 'accent',
-  },
-  {
-    title: 'Space Runner 2D',
-    category: 'Game',
-    description: 'Fast-paced endless runner game with procedurally generated levels and online leaderboards.',
-    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&h=600&fit=crop',
-    technologies: ['Unity', 'C#', 'Firebase', 'Photoshop'],
-    color: 'primary',
-  },
-  {
-    title: 'E-Commerce Platform',
-    category: 'Web Application',
-    description: 'Full-featured online store with secure payments, inventory management, and analytics dashboard.',
-    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop',
-    technologies: ['Next.js', 'Stripe', 'Prisma', 'AWS'],
-    color: 'secondary',
-  },
-];
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  image_url: string | null;
+  technologies: string[];
+  category: string;
+  live_url: string | null;
+  github_url: string | null;
+  featured: boolean;
+  display_order: number;
+}
 
 const ProjectsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const fetchProjects = async () => {
+    const { data, error } = await supabase
+      .from('projects')
+      .select('*')
+      .order('display_order', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching projects:', error);
+    } else {
+      setProjects(data || []);
+    }
+    setIsLoading(false);
+  };
 
   const nextProject = () => {
-    setCurrentIndex((prev) => (prev + 1) % projects.length);
+    if (projects.length > 0) {
+      setCurrentIndex((prev) => (prev + 1) % projects.length);
+    }
   };
 
   const prevProject = () => {
-    setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length);
+    if (projects.length > 0) {
+      setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length);
+    }
   };
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'Cybersecurity':
+        return 'primary';
+      case 'AI Application':
+        return 'secondary';
+      case 'Game Development':
+        return 'accent';
+      default:
+        return 'primary';
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <section id="projects" className="py-24 relative overflow-hidden">
+        <div className="container mx-auto px-6 flex items-center justify-center">
+          <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
+      </section>
+    );
+  }
+
+  if (projects.length === 0) {
+    return (
+      <section id="projects" className="py-24 relative overflow-hidden" ref={ref}>
+        <div className="absolute inset-0 cyber-grid opacity-10" />
+        <div className="container mx-auto px-6 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <span className="inline-block px-4 py-2 glass-card rounded-full text-primary font-mono text-sm mb-4">
+              {'// PORTFOLIO'}
+            </span>
+            <h2 className="section-title">
+              Featured <span className="gradient-text-cyan-purple">Projects</span>
+            </h2>
+          </motion.div>
+          <div className="text-center py-20 glass-card rounded-2xl">
+            <FolderOpen className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+            <h3 className="text-xl font-display font-bold mb-2">Coming Soon</h3>
+            <p className="text-muted-foreground">Projects will be displayed here</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="projects" className="py-24 relative overflow-hidden" ref={ref}>
@@ -101,14 +147,20 @@ const ProjectsSection = () => {
                 transition={{ duration: 0.5 }}
                 className="relative aspect-video rounded-2xl overflow-hidden"
               >
-                <img
-                  src={projects[currentIndex].image}
-                  alt={projects[currentIndex].title}
-                  className="w-full h-full object-cover"
-                />
+                {projects[currentIndex]?.image_url ? (
+                  <img
+                    src={projects[currentIndex].image_url}
+                    alt={projects[currentIndex].title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                    <FolderOpen className="w-16 h-16 text-muted-foreground" />
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
-                <span className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-medium glass-card text-${projects[currentIndex].color}`}>
-                  {projects[currentIndex].category}
+                <span className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-medium glass-card text-${getCategoryColor(projects[currentIndex]?.category)}`}>
+                  {projects[currentIndex]?.category}
                 </span>
               </motion.div>
 
@@ -120,40 +172,48 @@ const ProjectsSection = () => {
                 transition={{ duration: 0.5 }}
               >
                 <h3 className="text-3xl font-display font-bold mb-4 gradient-text">
-                  {projects[currentIndex].title}
+                  {projects[currentIndex]?.title}
                 </h3>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
-                  {projects[currentIndex].description}
+                  {projects[currentIndex]?.description}
                 </p>
                 <div className="flex flex-wrap gap-2 mb-8">
-                  {projects[currentIndex].technologies.map((tech) => (
+                  {projects[currentIndex]?.technologies.map((tech) => (
                     <span
                       key={tech}
-                      className={`px-4 py-2 glass-card rounded-full text-sm font-medium text-${projects[currentIndex].color}`}
+                      className={`px-4 py-2 glass-card rounded-full text-sm font-medium text-${getCategoryColor(projects[currentIndex]?.category)}`}
                     >
                       {tech}
                     </span>
                   ))}
                 </div>
                 <div className="flex gap-4">
-                  <motion.a
-                    href="#"
-                    className="cyber-button flex items-center gap-2 text-primary"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    Live Demo
-                  </motion.a>
-                  <motion.a
-                    href="#"
-                    className="px-6 py-4 rounded-lg border border-muted-foreground/30 text-muted-foreground hover:border-primary hover:text-primary transition-all flex items-center gap-2 font-display font-semibold"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Github className="w-4 h-4" />
-                    Code
-                  </motion.a>
+                  {projects[currentIndex]?.live_url && (
+                    <motion.a
+                      href={projects[currentIndex].live_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="cyber-button flex items-center gap-2 text-primary"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      Live Demo
+                    </motion.a>
+                  )}
+                  {projects[currentIndex]?.github_url && (
+                    <motion.a
+                      href={projects[currentIndex].github_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-6 py-4 rounded-lg border border-muted-foreground/30 text-muted-foreground hover:border-primary hover:text-primary transition-all flex items-center gap-2 font-display font-semibold"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Github className="w-4 h-4" />
+                      Code
+                    </motion.a>
+                  )}
                 </div>
               </motion.div>
             </div>
@@ -196,36 +256,44 @@ const ProjectsSection = () => {
         </motion.div>
 
         {/* Project Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.slice(0, 3).map((project, index) => (
-            <motion.div
-              key={project.title}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-              whileHover={{ y: -5 }}
-              className="glass-card rounded-2xl overflow-hidden hover-glow group cursor-pointer"
-            >
-              <div className="relative aspect-video overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
-              </div>
-              <div className="p-6">
-                <span className={`text-xs font-medium text-${project.color} mb-2 block`}>
-                  {project.category}
-                </span>
-                <h4 className="font-display font-bold mb-2">{project.title}</h4>
-                <p className="text-sm text-muted-foreground line-clamp-2">
-                  {project.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {projects.length > 1 && (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {projects.slice(0, 3).map((project, index) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                whileHover={{ y: -5 }}
+                className="glass-card rounded-2xl overflow-hidden hover-glow group cursor-pointer"
+              >
+                <div className="relative aspect-video overflow-hidden">
+                  {project.image_url ? (
+                    <img
+                      src={project.image_url}
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                      <FolderOpen className="w-10 h-10 text-muted-foreground" />
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+                </div>
+                <div className="p-6">
+                  <span className={`text-xs font-medium text-${getCategoryColor(project.category)} mb-2 block`}>
+                    {project.category}
+                  </span>
+                  <h4 className="font-display font-bold mb-2">{project.title}</h4>
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {project.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

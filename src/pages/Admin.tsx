@@ -1,0 +1,618 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { 
+  LogOut, 
+  Plus, 
+  Trash2, 
+  Edit, 
+  Save, 
+  X, 
+  Upload,
+  FolderOpen,
+  ExternalLink,
+  Github,
+  Star,
+  ArrowLeft
+} from 'lucide-react';
+import { useAdmin } from '@/contexts/AdminContext';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+import ParticleBackground from '@/components/ParticleBackground';
+
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  image_url: string | null;
+  technologies: string[];
+  category: string;
+  live_url: string | null;
+  github_url: string | null;
+  featured: boolean;
+  display_order: number;
+}
+
+const Admin = () => {
+  const { isAdmin, logout } = useAdmin();
+  const navigate = useNavigate();
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [isAddingNew, setIsAddingNew] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  const emptyProject: Omit<Project, 'id'> = {
+    title: '',
+    description: '',
+    image_url: null,
+    technologies: [],
+    category: 'Web Development',
+    live_url: null,
+    github_url: null,
+    featured: false,
+    display_order: 0,
+  };
+
+  const [newProject, setNewProject] = useState<Omit<Project, 'id'>>(emptyProject);
+
+  useEffect(() => {
+    if (!isAdmin) {
+      navigate('/admin-login');
+      return;
+    }
+    fetchProjects();
+  }, [isAdmin, navigate]);
+
+  const fetchProjects = async () => {
+    setIsLoading(true);
+    const { data, error } = await supabase
+      .from('projects')
+      .select('*')
+      .order('display_order', { ascending: true });
+
+    if (error) {
+      toast.error('Failed to fetch projects');
+      console.error(error);
+    } else {
+      setProjects(data || []);
+    }
+    setIsLoading(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    toast.success('Logged out successfully');
+    navigate('/');
+  };
+
+  const handleImageUpload = async (file: File, isEdit: boolean = false) => {
+    setUploadingImage(true);
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}.${fileExt}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('project-images')
+      .upload(fileName, file);
+
+    if (uploadError) {
+      toast.error('Failed to upload image');
+      console.error(uploadError);
+      setUploadingImage(false);
+      return null;
+    }
+
+    const { data: urlData } = supabase.storage
+      .from('project-images')
+      .getPublicUrl(fileName);
+
+    setUploadingImage(false);
+    
+    if (isEdit && editingProject) {
+      setEditingProject({ ...editingProject, image_url: urlData.publicUrl });
+    } else {
+      setNewProject({ ...newProject, image_url: urlData.publicUrl });
+    }
+    
+    return urlData.publicUrl;
+  };
+
+  const handleAddProject = async () => {
+    if (!newProject.title || !newProject.description) {
+      toast.error('Title and description are required');
+      return;
+    }
+
+    const { error } = await supabase.from('projects').insert([{
+      ...newProject,
+      display_order: projects.length,
+    }]);
+
+    if (error) {
+      toast.error('Failed to add project');
+      console.error(error);
+    } else {
+      toast.success('Project added successfully');
+      setNewProject(emptyProject);
+      setIsAddingNew(false);
+      fetchProjects();
+    }
+  };
+
+  const handleUpdateProject = async () => {
+    if (!editingProject) return;
+
+    const { error } = await supabase
+      .from('projects')
+      .update({
+        title: editingProject.title,
+        description: editingProject.description,
+        image_url: editingProject.image_url,
+        technologies: editingProject.technologies,
+        category: editingProject.category,
+        live_url: editingProject.live_url,
+        github_url: editingProject.github_url,
+        featured: editingProject.featured,
+        display_order: editingProject.display_order,
+      })
+      .eq('id', editingProject.id);
+
+    if (error) {
+      toast.error('Failed to update project');
+      console.error(error);
+    } else {
+      toast.success('Project updated successfully');
+      setEditingProject(null);
+      fetchProjects();
+    }
+  };
+
+  const handleDeleteProject = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this project?')) return;
+
+    const { error } = await supabase.from('projects').delete().eq('id', id);
+
+    if (error) {
+      toast.error('Failed to delete project');
+      console.error(error);
+    } else {
+      toast.success('Project deleted successfully');
+      fetchProjects();
+    }
+  };
+
+  const categories = [
+    'Web Development',
+    'AI Application',
+    'Cybersecurity',
+    'Game Development',
+    'Mobile App',
+    'Other',
+  ];
+
+  if (!isAdmin) return null;
+
+  return (
+    <div className="relative min-h-screen">
+      <ParticleBackground />
+      
+      <div className="relative z-10">
+        {/* Header */}
+        <header className="glass-card border-b border-border sticky top-0 z-50">
+          <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => navigate('/')}
+                className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Back
+              </button>
+              <h1 className="text-xl font-display font-bold gradient-text">Admin Panel</h1>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-4 py-2 glass-card rounded-lg border border-border hover:border-red-500 hover:text-red-500 transition-colors"
+            >
+              <LogOut className="w-4 h-4" />
+              Logout
+            </button>
+          </div>
+        </header>
+
+        <main className="container mx-auto px-6 py-8">
+          {/* Add New Project Button */}
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-2xl font-display font-bold">
+              Manage <span className="gradient-text">Projects</span>
+            </h2>
+            <motion.button
+              onClick={() => setIsAddingNew(true)}
+              className="cyber-button flex items-center gap-2 text-primary"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Plus className="w-5 h-5" />
+              Add Project
+            </motion.button>
+          </div>
+
+          {/* Add New Project Form */}
+          {isAddingNew && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="glass-card p-6 rounded-2xl cyber-border mb-8"
+            >
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-lg font-display font-bold">New Project</h3>
+                <button
+                  onClick={() => {
+                    setIsAddingNew(false);
+                    setNewProject(emptyProject);
+                  }}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">Title *</label>
+                    <input
+                      type="text"
+                      value={newProject.title}
+                      onChange={(e) => setNewProject({ ...newProject, title: e.target.value })}
+                      className="w-full px-4 py-3 glass-card rounded-xl border border-border focus:border-primary focus:outline-none bg-transparent"
+                      placeholder="Project title"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">Description *</label>
+                    <textarea
+                      value={newProject.description}
+                      onChange={(e) => setNewProject({ ...newProject, description: e.target.value })}
+                      className="w-full px-4 py-3 glass-card rounded-xl border border-border focus:border-primary focus:outline-none bg-transparent min-h-[100px]"
+                      placeholder="Project description"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">Category</label>
+                    <select
+                      value={newProject.category}
+                      onChange={(e) => setNewProject({ ...newProject, category: e.target.value })}
+                      className="w-full px-4 py-3 glass-card rounded-xl border border-border focus:border-primary focus:outline-none bg-background"
+                    >
+                      {categories.map((cat) => (
+                        <option key={cat} value={cat}>{cat}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">
+                      Technologies (comma separated)
+                    </label>
+                    <input
+                      type="text"
+                      value={newProject.technologies.join(', ')}
+                      onChange={(e) => setNewProject({ 
+                        ...newProject, 
+                        technologies: e.target.value.split(',').map(t => t.trim()).filter(Boolean)
+                      })}
+                      className="w-full px-4 py-3 glass-card rounded-xl border border-border focus:border-primary focus:outline-none bg-transparent"
+                      placeholder="React, TypeScript, Node.js"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">Project Image</label>
+                    <div className="relative">
+                      {newProject.image_url ? (
+                        <div className="relative aspect-video rounded-xl overflow-hidden mb-2">
+                          <img src={newProject.image_url} alt="Preview" className="w-full h-full object-cover" />
+                          <button
+                            onClick={() => setNewProject({ ...newProject, image_url: null })}
+                            className="absolute top-2 right-2 p-2 glass-card rounded-full hover:bg-red-500/20"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ) : (
+                        <label className="flex flex-col items-center justify-center aspect-video glass-card rounded-xl border-2 border-dashed border-border hover:border-primary cursor-pointer transition-colors">
+                          <Upload className="w-8 h-8 text-muted-foreground mb-2" />
+                          <span className="text-sm text-muted-foreground">
+                            {uploadingImage ? 'Uploading...' : 'Click to upload image'}
+                          </span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) handleImageUpload(file);
+                            }}
+                            disabled={uploadingImage}
+                          />
+                        </label>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">Live URL</label>
+                    <input
+                      type="url"
+                      value={newProject.live_url || ''}
+                      onChange={(e) => setNewProject({ ...newProject, live_url: e.target.value || null })}
+                      className="w-full px-4 py-3 glass-card rounded-xl border border-border focus:border-primary focus:outline-none bg-transparent"
+                      placeholder="https://example.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">GitHub URL</label>
+                    <input
+                      type="url"
+                      value={newProject.github_url || ''}
+                      onChange={(e) => setNewProject({ ...newProject, github_url: e.target.value || null })}
+                      className="w-full px-4 py-3 glass-card rounded-xl border border-border focus:border-primary focus:outline-none bg-transparent"
+                      placeholder="https://github.com/username/repo"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id="featured-new"
+                      checked={newProject.featured}
+                      onChange={(e) => setNewProject({ ...newProject, featured: e.target.checked })}
+                      className="w-4 h-4"
+                    />
+                    <label htmlFor="featured-new" className="text-sm text-muted-foreground">Featured project</label>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-4 mt-6">
+                <button
+                  onClick={() => {
+                    setIsAddingNew(false);
+                    setNewProject(emptyProject);
+                  }}
+                  className="px-6 py-3 rounded-xl border border-border hover:border-muted-foreground transition-colors"
+                >
+                  Cancel
+                </button>
+                <motion.button
+                  onClick={handleAddProject}
+                  className="cyber-button flex items-center gap-2 text-primary"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Save className="w-4 h-4" />
+                  Save Project
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Projects List */}
+          {isLoading ? (
+            <div className="flex items-center justify-center py-20">
+              <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : projects.length === 0 ? (
+            <div className="text-center py-20 glass-card rounded-2xl">
+              <FolderOpen className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+              <h3 className="text-xl font-display font-bold mb-2">No projects yet</h3>
+              <p className="text-muted-foreground">Click "Add Project" to create your first project</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {projects.map((project) => (
+                <motion.div
+                  key={project.id}
+                  layout
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="glass-card rounded-2xl overflow-hidden cyber-border"
+                >
+                  {editingProject?.id === project.id ? (
+                    /* Edit Form */
+                    <div className="p-6">
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                          <div>
+                            <label className="block text-sm font-medium text-muted-foreground mb-2">Title</label>
+                            <input
+                              type="text"
+                              value={editingProject.title}
+                              onChange={(e) => setEditingProject({ ...editingProject, title: e.target.value })}
+                              className="w-full px-4 py-3 glass-card rounded-xl border border-border focus:border-primary focus:outline-none bg-transparent"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-muted-foreground mb-2">Description</label>
+                            <textarea
+                              value={editingProject.description}
+                              onChange={(e) => setEditingProject({ ...editingProject, description: e.target.value })}
+                              className="w-full px-4 py-3 glass-card rounded-xl border border-border focus:border-primary focus:outline-none bg-transparent min-h-[100px]"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-muted-foreground mb-2">Category</label>
+                            <select
+                              value={editingProject.category}
+                              onChange={(e) => setEditingProject({ ...editingProject, category: e.target.value })}
+                              className="w-full px-4 py-3 glass-card rounded-xl border border-border focus:border-primary focus:outline-none bg-background"
+                            >
+                              {categories.map((cat) => (
+                                <option key={cat} value={cat}>{cat}</option>
+                              ))}
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-muted-foreground mb-2">Technologies</label>
+                            <input
+                              type="text"
+                              value={editingProject.technologies.join(', ')}
+                              onChange={(e) => setEditingProject({ 
+                                ...editingProject, 
+                                technologies: e.target.value.split(',').map(t => t.trim()).filter(Boolean)
+                              })}
+                              className="w-full px-4 py-3 glass-card rounded-xl border border-border focus:border-primary focus:outline-none bg-transparent"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-4">
+                          <div>
+                            <label className="block text-sm font-medium text-muted-foreground mb-2">Image</label>
+                            {editingProject.image_url ? (
+                              <div className="relative aspect-video rounded-xl overflow-hidden">
+                                <img src={editingProject.image_url} alt="Preview" className="w-full h-full object-cover" />
+                                <button
+                                  onClick={() => setEditingProject({ ...editingProject, image_url: null })}
+                                  className="absolute top-2 right-2 p-2 glass-card rounded-full hover:bg-red-500/20"
+                                >
+                                  <X className="w-4 h-4" />
+                                </button>
+                              </div>
+                            ) : (
+                              <label className="flex flex-col items-center justify-center aspect-video glass-card rounded-xl border-2 border-dashed border-border hover:border-primary cursor-pointer transition-colors">
+                                <Upload className="w-8 h-8 text-muted-foreground mb-2" />
+                                <span className="text-sm text-muted-foreground">Upload image</span>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  className="hidden"
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) handleImageUpload(file, true);
+                                  }}
+                                />
+                              </label>
+                            )}
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-muted-foreground mb-2">Live URL</label>
+                            <input
+                              type="url"
+                              value={editingProject.live_url || ''}
+                              onChange={(e) => setEditingProject({ ...editingProject, live_url: e.target.value || null })}
+                              className="w-full px-4 py-3 glass-card rounded-xl border border-border focus:border-primary focus:outline-none bg-transparent"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-muted-foreground mb-2">GitHub URL</label>
+                            <input
+                              type="url"
+                              value={editingProject.github_url || ''}
+                              onChange={(e) => setEditingProject({ ...editingProject, github_url: e.target.value || null })}
+                              className="w-full px-4 py-3 glass-card rounded-xl border border-border focus:border-primary focus:outline-none bg-transparent"
+                            />
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              id={`featured-${project.id}`}
+                              checked={editingProject.featured}
+                              onChange={(e) => setEditingProject({ ...editingProject, featured: e.target.checked })}
+                              className="w-4 h-4"
+                            />
+                            <label htmlFor={`featured-${project.id}`} className="text-sm text-muted-foreground">Featured</label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-end gap-4 mt-6">
+                        <button
+                          onClick={() => setEditingProject(null)}
+                          className="px-6 py-3 rounded-xl border border-border hover:border-muted-foreground transition-colors"
+                        >
+                          Cancel
+                        </button>
+                        <motion.button
+                          onClick={handleUpdateProject}
+                          className="cyber-button flex items-center gap-2 text-primary"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <Save className="w-4 h-4" />
+                          Save Changes
+                        </motion.button>
+                      </div>
+                    </div>
+                  ) : (
+                    /* Display Mode */
+                    <div className="flex flex-col md:flex-row">
+                      {project.image_url && (
+                        <div className="md:w-64 h-48 md:h-auto flex-shrink-0">
+                          <img
+                            src={project.image_url}
+                            alt={project.title}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      )}
+                      <div className="flex-1 p-6">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-2">
+                              {project.featured && (
+                                <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                              )}
+                              <span className="text-xs font-medium text-primary">{project.category}</span>
+                            </div>
+                            <h3 className="text-xl font-display font-bold mb-2">{project.title}</h3>
+                            <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{project.description}</p>
+                            <div className="flex flex-wrap gap-2 mb-4">
+                              {project.technologies.map((tech) => (
+                                <span key={tech} className="px-3 py-1 text-xs glass-card rounded-full text-muted-foreground">
+                                  {tech}
+                                </span>
+                              ))}
+                            </div>
+                            <div className="flex gap-3">
+                              {project.live_url && (
+                                <a href={project.live_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm text-primary hover:underline">
+                                  <ExternalLink className="w-4 h-4" /> Live
+                                </a>
+                              )}
+                              {project.github_url && (
+                                <a href={project.github_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+                                  <Github className="w-4 h-4" /> Code
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => setEditingProject(project)}
+                              className="p-2 glass-card rounded-lg hover:border-primary border border-transparent transition-colors"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteProject(project.id)}
+                              className="p-2 glass-card rounded-lg hover:border-red-500 hover:text-red-500 border border-transparent transition-colors"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default Admin;

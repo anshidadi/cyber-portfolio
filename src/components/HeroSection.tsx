@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { ChevronDown, Download, Mail } from 'lucide-react';
-import profileImage from '@/assets/profile-photo.jpeg';
+import heroImage from '@/assets/coding-hero.png';
 
 const HeroSection = () => {
   const floatingShapes = [
@@ -173,15 +173,15 @@ const HeroSection = () => {
               />
             </div>
 
-            {/* Profile image container */}
+            {/* Hero image container */}
             <motion.div
-              className="relative z-10 w-64 h-80 md:w-80 md:h-96 rounded-2xl overflow-hidden animated-border"
+              className="relative z-10 w-80 h-64 md:w-[450px] md:h-[300px] rounded-2xl overflow-hidden animated-border"
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             >
               <img
-                src={profileImage}
-                alt="Muhammed Anshid KT"
+                src={heroImage}
+                alt="Developer coding at computer"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
