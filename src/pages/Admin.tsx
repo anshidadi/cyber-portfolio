@@ -19,9 +19,12 @@ import {
 } from 'lucide-react';
 import { useAdmin } from '@/contexts/AdminContext';
 import { supabase } from '@/integrations/supabase/client';
+import { adminApi } from '@/lib/adminApi';
 import { toast } from 'sonner';
 import ParticleBackground from '@/components/ParticleBackground';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+const ADMIN_PASSWORD = '8086';
 
 interface Project {
   id: string;
@@ -168,121 +171,140 @@ const Admin = () => {
       return;
     }
 
-    const { error } = await supabase.from('projects').insert([{
-      ...newProject,
-      display_order: projects.length,
-    }]);
-
-    if (error) {
-      toast.error('Failed to add project');
-      console.error(error);
-    } else {
+    try {
+      await adminApi({
+        action: 'insert',
+        table: 'projects',
+        data: {
+          ...newProject,
+          display_order: projects.length,
+        },
+      }, ADMIN_PASSWORD);
+      
       toast.success('Project added successfully');
       setNewProject(emptyProject);
       setIsAddingNewProject(false);
       fetchProjects();
+    } catch (error) {
+      toast.error('Failed to add project');
+      console.error(error);
     }
   };
 
   const handleUpdateProject = async () => {
     if (!editingProject) return;
 
-    const { error } = await supabase
-      .from('projects')
-      .update({
-        title: editingProject.title,
-        description: editingProject.description,
-        image_url: editingProject.image_url,
-        technologies: editingProject.technologies,
-        category: editingProject.category,
-        live_url: editingProject.live_url,
-        github_url: editingProject.github_url,
-        featured: editingProject.featured,
-        display_order: editingProject.display_order,
-      })
-      .eq('id', editingProject.id);
-
-    if (error) {
-      toast.error('Failed to update project');
-      console.error(error);
-    } else {
+    try {
+      await adminApi({
+        action: 'update',
+        table: 'projects',
+        id: editingProject.id,
+        data: {
+          title: editingProject.title,
+          description: editingProject.description,
+          image_url: editingProject.image_url,
+          technologies: editingProject.technologies,
+          category: editingProject.category,
+          live_url: editingProject.live_url,
+          github_url: editingProject.github_url,
+          featured: editingProject.featured,
+          display_order: editingProject.display_order,
+        },
+      }, ADMIN_PASSWORD);
+      
       toast.success('Project updated successfully');
       setEditingProject(null);
       fetchProjects();
+    } catch (error) {
+      toast.error('Failed to update project');
+      console.error(error);
     }
   };
 
   const handleDeleteProject = async (id: string) => {
     if (!confirm('Are you sure you want to delete this project?')) return;
 
-    const { error } = await supabase.from('projects').delete().eq('id', id);
-
-    if (error) {
-      toast.error('Failed to delete project');
-      console.error(error);
-    } else {
+    try {
+      await adminApi({
+        action: 'delete',
+        table: 'projects',
+        id,
+      }, ADMIN_PASSWORD);
+      
       toast.success('Project deleted successfully');
       fetchProjects();
+    } catch (error) {
+      toast.error('Failed to delete project');
+      console.error(error);
     }
   };
 
-  // Skills CRUD
   const handleAddSkill = async () => {
     if (!newSkill.name) {
       toast.error('Skill name is required');
       return;
     }
 
-    const { error } = await supabase.from('skills').insert([{
-      ...newSkill,
-      display_order: skills.length,
-    }]);
-
-    if (error) {
-      toast.error('Failed to add skill');
-      console.error(error);
-    } else {
+    try {
+      await adminApi({
+        action: 'insert',
+        table: 'skills',
+        data: {
+          ...newSkill,
+          display_order: skills.length,
+        },
+      }, ADMIN_PASSWORD);
+      
       toast.success('Skill added successfully');
       setNewSkill(emptySkill);
       setIsAddingNewSkill(false);
       fetchSkills();
+    } catch (error) {
+      toast.error('Failed to add skill');
+      console.error(error);
     }
   };
 
   const handleUpdateSkill = async () => {
     if (!editingSkill) return;
 
-    const { error } = await supabase
-      .from('skills')
-      .update({
-        name: editingSkill.name,
-        level: editingSkill.level,
-        color: editingSkill.color,
-        display_order: editingSkill.display_order,
-      })
-      .eq('id', editingSkill.id);
-
-    if (error) {
-      toast.error('Failed to update skill');
-      console.error(error);
-    } else {
+    try {
+      await adminApi({
+        action: 'update',
+        table: 'skills',
+        id: editingSkill.id,
+        data: {
+          name: editingSkill.name,
+          level: editingSkill.level,
+          color: editingSkill.color,
+          display_order: editingSkill.display_order,
+        },
+      }, ADMIN_PASSWORD);
+      
       toast.success('Skill updated successfully');
       setEditingSkill(null);
       fetchSkills();
+    } catch (error) {
+      toast.error('Failed to update skill');
+      console.error(error);
     }
   };
 
   const handleDeleteSkill = async (id: string) => {
     if (!confirm('Are you sure you want to delete this skill?')) return;
 
-    const { error } = await supabase.from('skills').delete().eq('id', id);
-
-    if (error) {
-      toast.error('Failed to delete skill');
-      console.error(error);
-    } else {
+    try {
+      await adminApi({
+        action: 'delete',
+        table: 'skills',
+        id,
+      }, ADMIN_PASSWORD);
+      
       toast.success('Skill deleted successfully');
       fetchSkills();
+    } catch (error) {
+      toast.error('Failed to delete skill');
+      console.error(error);
     }
   };
 
