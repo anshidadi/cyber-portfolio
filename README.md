@@ -1,73 +1,112 @@
-# Welcome to your Lovable project
+# Muhammed Anshid KT - Portfolio
 
-## Project info
+A modern, responsive personal portfolio website showcasing my work in Cybersecurity, AI Development, and Web Development.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## 🌐 Live Site
 
-## How can I edit this code?
+**[anshidkt.in](https://anshidkt.in)**
 
-There are several ways of editing your application.
+## ✨ Features
 
-**Use Lovable**
+- **Modern Design** - Clean, professional UI with cyberpunk-inspired aesthetics
+- **Fully Responsive** - Works perfectly on mobile, tablet, and desktop
+- **Dark/Light Mode** - Toggle between themes with persistent preference
+- **Smooth Animations** - CSS transitions and scroll-triggered animations
+- **SEO Optimized** - Proper meta tags, semantic HTML, accessibility features
+- **Fast Loading** - No frameworks, minimal dependencies, optimized assets
+- **GitHub Pages Ready** - Works directly without any build process
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## 📁 Project Structure
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+/
+├── index.html          # Main HTML file
+├── assets/
+│   ├── css/
+│   │   └── style.css   # All styles
+│   ├── js/
+│   │   └── main.js     # All JavaScript
+│   ├── images/         # Image assets
+│   └── fonts/          # Custom fonts (if any)
+├── favicon.ico         # Favicon
+├── CNAME              # Custom domain config
+├── robots.txt         # Search engine directives
+├── sitemap.xml        # Sitemap for SEO
+└── README.md          # This file
 ```
 
-**Edit a file directly in GitHub**
+## 🛠️ Technologies
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- **HTML5** - Semantic markup
+- **CSS3** - Modern styling with CSS variables, Flexbox, Grid
+- **Vanilla JavaScript** - No frameworks, pure JS
+- **Google Fonts** - Orbitron & Inter font families
 
-**Use GitHub Codespaces**
+## 🚀 Deployment
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### GitHub Pages
 
-## What technologies are used for this project?
+1. Push this repository to GitHub
+2. Go to Settings → Pages
+3. Select "Deploy from a branch" → main → / (root)
+4. Your site will be live at `https://username.github.io/repo-name`
 
-This project is built with:
+### Custom Domain (GoDaddy)
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+1. Add your domain to the `CNAME` file
+2. Configure DNS at GoDaddy:
+   - A Record: `@` → `185.199.108.153`
+   - A Record: `@` → `185.199.109.153`
+   - A Record: `@` → `185.199.110.153`
+   - A Record: `@` → `185.199.111.153`
+   - CNAME: `www` → `username.github.io`
 
-## How can I deploy this project?
+### Netlify / Vercel
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+Simply drag and drop the folder or connect your GitHub repository.
 
-## Can I connect a custom domain to my Lovable project?
+## 📝 Customization
 
-Yes, you can!
+### Personal Information
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Edit `index.html` to update:
+- Name and titles in the hero section
+- About me content
+- Skills and percentages
+- Project details
+- Contact information
+- Social media links
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### Colors
+
+Edit CSS variables in `assets/css/style.css`:
+
+```css
+:root {
+  --accent-cyan: hsl(185, 100%, 50%);
+  --accent-purple: hsl(270, 100%, 60%);
+  --accent-green: hsl(150, 100%, 50%);
+  /* ... other colors */
+}
+```
+
+### Content
+
+- Add images to `assets/images/`
+- Update project links and descriptions
+- Modify the typing animation roles in `assets/js/main.js`
+
+## 📄 License
+
+MIT License - Feel free to use and modify for your own portfolio.
+
+## 📧 Contact
+
+- **Email**: hello@anshidkt.in
+- **Website**: [anshidkt.in](https://anshidkt.in)
+- **LinkedIn**: [linkedin.com/in/anshidkt](https://linkedin.com/in/anshidkt)
+- **GitHub**: [github.com/anshidkt](https://github.com/anshidkt)
+
+---
+
+Made with 💚 by Muhammed Anshid KT
