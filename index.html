@@ -1,30 +1,850 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Anshid KT - Cybersecurity Engineer, Web Developer & AI Developer from Kerala, India. Building secure, intelligent digital experiences.">
-    <meta name="keywords" content="Anshid KT, Cybersecurity, Web Developer, AI Developer, Portfolio, Kerala">
-    <meta name="author" content="Anshid KT">
-    <meta name="robots" content="index, follow">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Anshid KT - Cybersecurity Engineer, Web Developer & AI Developer from Kerala, India.">
+  <meta name="keywords" content="Anshid KT, Cybersecurity, Web Developer, AI Developer, Portfolio, Kerala">
+  <meta name="author" content="Anshid KT">
+  <meta name="robots" content="index, follow">
+  
+  <meta property="og:title" content="Anshid KT - Cybersecurity & AI Developer">
+  <meta property="og:description" content="Building secure, intelligent digital experiences from Kerala, India.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://anshidkt.in">
+  
+  <title>Anshid KT | Cybersecurity Engineer & AI Developer</title>
+  
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+  <link rel="canonical" href="https://anshidkt.in">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+  <!-- Preloader with Multiple Animations -->
+  <div id="preloader" class="preloader">
+    <div class="loader-wrapper">
+      <div class="loader-cube">
+        <div class="cube-face front"></div>
+        <div class="cube-face back"></div>
+        <div class="cube-face right"></div>
+        <div class="cube-face left"></div>
+        <div class="cube-face top"></div>
+        <div class="cube-face bottom"></div>
+      </div>
+      <div class="loader-text">
+        <span class="letter" style="--i:0">A</span>
+        <span class="letter" style="--i:1">N</span>
+        <span class="letter" style="--i:2">S</span>
+        <span class="letter" style="--i:3">H</span>
+        <span class="letter" style="--i:4">I</span>
+        <span class="letter" style="--i:5">D</span>
+      </div>
+      <div class="loader-progress">
+        <div class="progress-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+  <div class="cursor-trail"></div>
+
+  <!-- Background Effects -->
+  <div class="bg-container">
+    <div class="gradient-sphere sphere-1"></div>
+    <div class="gradient-sphere sphere-2"></div>
+    <div class="gradient-sphere sphere-3"></div>
+    <div class="noise-overlay"></div>
+    <div class="grid-overlay"></div>
+    <canvas id="particleCanvas"></canvas>
+  </div>
+
+  <!-- Navigation -->
+  <nav id="navbar" class="navbar">
+    <div class="nav-container">
+      <a href="#home" class="nav-logo magnetic-hover">
+        <span class="logo-bracket">[</span>
+        <span class="logo-text glitch-text" data-text="ANSHID">ANSHID</span>
+        <span class="logo-bracket">]</span>
+      </a>
+      
+      <ul id="navMenu" class="nav-menu">
+        <li><a href="#home" class="nav-link active" data-text="Home"><span>Home</span></a></li>
+        <li><a href="#about" class="nav-link" data-text="About"><span>About</span></a></li>
+        <li><a href="#services" class="nav-link" data-text="Services"><span>Services</span></a></li>
+        <li><a href="#skills" class="nav-link" data-text="Skills"><span>Skills</span></a></li>
+        <li><a href="#projects" class="nav-link" data-text="Projects"><span>Projects</span></a></li>
+        <li><a href="#contact" class="nav-link" data-text="Contact"><span>Contact</span></a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button id="themeToggle" class="theme-toggle magnetic-hover" aria-label="Toggle theme">
+          <div class="toggle-icon">
+            <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"></circle>
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+            </svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </div>
+        </button>
+        <a href="#contact" class="nav-cta ripple-btn">
+          <span>Let's Talk</span>
+          <div class="btn-glow"></div>
+        </a>
+      </div>
+
+      <button id="navToggle" class="nav-toggle" aria-label="Toggle menu">
+        <span class="bar bar-1"></span>
+        <span class="bar bar-2"></span>
+        <span class="bar bar-3"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <div class="hero-badge animate-pop">
+        <span class="badge-pulse"></span>
+        <span class="badge-text">Available for hire</span>
+      </div>
+      
+      <h1 class="hero-title">
+        <span class="title-line animate-slide-up" style="--delay: 0.1s">Hi, I'm</span>
+        <span class="title-name animate-slide-up" style="--delay: 0.2s">
+          <span class="name-text gradient-text-animate">Anshid KT</span>
+          <span class="name-underline"></span>
+        </span>
+      </h1>
+      
+      <div class="hero-roles animate-slide-up" style="--delay: 0.3s">
+        <span class="role-prefix">I'm a</span>
+        <div class="role-wrapper">
+          <span id="typedRole" class="typed-role"></span>
+          <span class="cursor-blink">|</span>
+        </div>
+      </div>
+      
+      <p class="hero-description animate-slide-up" style="--delay: 0.4s">
+        Crafting secure, intelligent, and visually stunning digital experiences 
+        from <span class="highlight-text">Kerala, India</span>. Turning complex challenges into elegant solutions.
+      </p>
+      
+      <div class="hero-cta animate-slide-up" style="--delay: 0.5s">
+        <a href="#projects" class="btn btn-primary magnetic-hover">
+          <span class="btn-content">
+            <span class="btn-text">View My Work</span>
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </span>
+          <div class="btn-bg"></div>
+          <div class="btn-shine"></div>
+        </a>
+        <a href="#contact" class="btn btn-outline magnetic-hover">
+          <span class="btn-content">
+            <span class="btn-text">Get in Touch</span>
+          </span>
+          <div class="btn-border"></div>
+        </a>
+      </div>
+      
+      <div class="hero-stats animate-slide-up" style="--delay: 0.6s">
+        <div class="stat-item hover-lift">
+          <span class="stat-number counter" data-target="5">0</span>
+          <span class="stat-suffix">+</span>
+          <span class="stat-label">Years Experience</span>
+          <div class="stat-glow"></div>
+        </div>
+        <div class="stat-divider pulse-line"></div>
+        <div class="stat-item hover-lift">
+          <span class="stat-number counter" data-target="50">0</span>
+          <span class="stat-suffix">+</span>
+          <span class="stat-label">Projects Completed</span>
+          <div class="stat-glow"></div>
+        </div>
+        <div class="stat-divider pulse-line"></div>
+        <div class="stat-item hover-lift">
+          <span class="stat-number counter" data-target="30">0</span>
+          <span class="stat-suffix">+</span>
+          <span class="stat-label">Happy Clients</span>
+          <div class="stat-glow"></div>
+        </div>
+      </div>
+    </div>
     
-    <!-- Open Graph -->
-    <meta property="og:title" content="Anshid KT - Cybersecurity & AI Developer">
-    <meta property="og:description" content="Building secure, intelligent digital experiences from Kerala, India.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://anshidkt.in">
+    <div class="hero-visual">
+      <div class="hero-card-3d" id="heroCard">
+        <div class="card-layers">
+          <div class="card-layer layer-1"></div>
+          <div class="card-layer layer-2"></div>
+          <div class="card-layer layer-3"></div>
+        </div>
+        <div class="card-content">
+          <div class="code-window">
+            <div class="window-header">
+              <div class="window-controls">
+                <span class="control close"></span>
+                <span class="control minimize"></span>
+                <span class="control maximize"></span>
+              </div>
+              <span class="window-title">anshid.config.js</span>
+            </div>
+            <div class="code-body">
+              <pre><code id="codeContent"></code></pre>
+            </div>
+          </div>
+        </div>
+        
+        <div class="floating-icons">
+          <div class="float-icon icon-1 float-animation"><span>🛡️</span></div>
+          <div class="float-icon icon-2 float-animation-delayed"><span>💻</span></div>
+          <div class="float-icon icon-3 float-animation"><span>🤖</span></div>
+          <div class="float-icon icon-4 float-animation-delayed"><span>⚡</span></div>
+          <div class="float-icon icon-5 orbit-animation"><span>🔒</span></div>
+          <div class="float-icon icon-6 orbit-animation-reverse"><span>🎯</span></div>
+        </div>
+      </div>
+    </div>
     
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Anshid KT - Cybersecurity & AI Developer">
-    <meta name="twitter:description" content="Building secure, intelligent digital experiences.">
-    
-    <title>Anshid KT | Cybersecurity Engineer & AI Developer</title>
-    <link rel="canonical" href="https://anshidkt.in">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    <a href="#about" class="scroll-indicator bounce-animation">
+      <span class="scroll-text fade-in-out">Scroll Down</span>
+      <div class="scroll-arrow">
+        <span class="arrow-line"></span>
+        <span class="arrow-line"></span>
+      </div>
+    </a>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag reveal-fade">About Me</span>
+        <h2 class="section-title reveal-slide">
+          Passionate Developer &<br>
+          <span class="gradient-text-animate">Security Enthusiast</span>
+        </h2>
+      </div>
+      
+      <div class="about-grid">
+        <div class="about-image reveal-scale">
+          <div class="image-frame parallax-tilt">
+            <div class="frame-border animated-border"></div>
+            <div class="image-placeholder morph-shape">
+              <div class="placeholder-content">
+                <span class="placeholder-icon bounce-animation">👨‍💻</span>
+              </div>
+              <div class="image-overlay"></div>
+            </div>
+            <div class="frame-glow pulse-glow"></div>
+          </div>
+          
+          <div class="experience-badge slide-in-right">
+            <div class="badge-inner spin-slow">
+              <span class="exp-number counter" data-target="5">0</span>
+              <span class="exp-plus">+</span>
+            </div>
+            <span class="exp-text">Years of<br>Experience</span>
+          </div>
+        </div>
+        
+        <div class="about-content">
+          <div class="about-text reveal-slide">
+            <p class="lead text-reveal">
+              I'm a passionate <strong class="highlight-word">Cybersecurity Engineer</strong> and 
+              <strong class="highlight-word">Full-Stack Developer</strong> based in Kerala, India.
+            </p>
+            <p class="text-reveal" style="--delay: 0.2s">
+              My journey in tech started with a curiosity about how things work under the hood. 
+              Today, I combine my knowledge of security, AI, and web development to create 
+              solutions that are not just functional, but also secure and intelligent.
+            </p>
+          </div>
+          
+          <div class="about-highlights">
+            <div class="highlight-item reveal-pop hover-3d" style="--delay: 0.1s">
+              <div class="highlight-icon wobble-hover">🎯</div>
+              <div class="highlight-content">
+                <h4>Problem Solver</h4>
+                <p>Turning complex challenges into elegant solutions</p>
+              </div>
+              <div class="highlight-shine"></div>
+            </div>
+            <div class="highlight-item reveal-pop hover-3d" style="--delay: 0.2s">
+              <div class="highlight-icon wobble-hover">🚀</div>
+              <div class="highlight-content">
+                <h4>Fast Learner</h4>
+                <p>Always staying ahead with latest technologies</p>
+              </div>
+              <div class="highlight-shine"></div>
+            </div>
+            <div class="highlight-item reveal-pop hover-3d" style="--delay: 0.3s">
+              <div class="highlight-icon wobble-hover">🤝</div>
+              <div class="highlight-content">
+                <h4>Team Player</h4>
+                <p>Collaborative approach to building great products</p>
+              </div>
+              <div class="highlight-shine"></div>
+            </div>
+          </div>
+          
+          <div class="about-cta reveal-fade">
+            <a href="./assets/resume.pdf" class="btn btn-primary magnetic-hover" download>
+              <span class="btn-content">
+                <svg class="btn-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                </svg>
+                <span class="btn-text">Download CV</span>
+              </span>
+              <div class="btn-bg"></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="services section">
+    <div class="container">
+      <div class="section-header center">
+        <span class="section-tag reveal-fade">What I Do</span>
+        <h2 class="section-title reveal-slide">
+          Services I <span class="gradient-text-animate">Offer</span>
+        </h2>
+        <p class="section-description reveal-fade">
+          Comprehensive solutions tailored to your digital needs
+        </p>
+      </div>
+      
+      <div class="services-grid">
+        <article class="service-card reveal-flip hover-3d" style="--delay: 0.1s">
+          <div class="card-bg gradient-shift"></div>
+          <div class="card-content">
+            <div class="service-icon icon-float">
+              <span>🛡️</span>
+              <div class="icon-ring pulse-ring"></div>
+            </div>
+            <h3 class="service-title">Cybersecurity</h3>
+            <p class="service-description">
+              Comprehensive security audits, penetration testing, and vulnerability assessments.
+            </p>
+            <ul class="service-features stagger-list">
+              <li><span class="feature-dot"></span>Security Audits</li>
+              <li><span class="feature-dot"></span>Penetration Testing</li>
+              <li><span class="feature-dot"></span>Incident Response</li>
+            </ul>
+            <div class="card-arrow slide-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </div>
+          </div>
+          <div class="card-shine"></div>
+        </article>
+
+        <article class="service-card reveal-flip hover-3d" style="--delay: 0.2s">
+          <div class="card-bg gradient-shift"></div>
+          <div class="card-content">
+            <div class="service-icon icon-float" style="--accent: var(--purple)">
+              <span>💻</span>
+              <div class="icon-ring pulse-ring"></div>
+            </div>
+            <h3 class="service-title">Web Development</h3>
+            <p class="service-description">
+              Modern, responsive websites and web applications built with cutting-edge technologies.
+            </p>
+            <ul class="service-features stagger-list">
+              <li><span class="feature-dot"></span>Custom Websites</li>
+              <li><span class="feature-dot"></span>Web Applications</li>
+              <li><span class="feature-dot"></span>E-commerce Solutions</li>
+            </ul>
+            <div class="card-arrow slide-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </div>
+          </div>
+          <div class="card-shine"></div>
+        </article>
+
+        <article class="service-card reveal-flip hover-3d" style="--delay: 0.3s">
+          <div class="card-bg gradient-shift"></div>
+          <div class="card-content">
+            <div class="service-icon icon-float" style="--accent: var(--green)">
+              <span>🤖</span>
+              <div class="icon-ring pulse-ring"></div>
+            </div>
+            <h3 class="service-title">AI Development</h3>
+            <p class="service-description">
+              Intelligent solutions powered by machine learning and AI to automate processes.
+            </p>
+            <ul class="service-features stagger-list">
+              <li><span class="feature-dot"></span>ML Models</li>
+              <li><span class="feature-dot"></span>Chatbots & Assistants</li>
+              <li><span class="feature-dot"></span>Data Analytics</li>
+            </ul>
+            <div class="card-arrow slide-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </div>
+          </div>
+          <div class="card-shine"></div>
+        </article>
+
+        <article class="service-card reveal-flip hover-3d" style="--delay: 0.4s">
+          <div class="card-bg gradient-shift"></div>
+          <div class="card-content">
+            <div class="service-icon icon-float" style="--accent: var(--pink)">
+              <span>🎮</span>
+              <div class="icon-ring pulse-ring"></div>
+            </div>
+            <h3 class="service-title">Game Development</h3>
+            <p class="service-description">
+              Engaging gaming experiences from concept to deployment.
+            </p>
+            <ul class="service-features stagger-list">
+              <li><span class="feature-dot"></span>Unity Development</li>
+              <li><span class="feature-dot"></span>Game Design</li>
+              <li><span class="feature-dot"></span>2D/3D Games</li>
+            </ul>
+            <div class="card-arrow slide-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </div>
+          </div>
+          <div class="card-shine"></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="skills section">
+    <div class="container">
+      <div class="section-header center">
+        <span class="section-tag reveal-fade">My Expertise</span>
+        <h2 class="section-title reveal-slide">
+          Technical <span class="gradient-text-animate">Skills</span>
+        </h2>
+      </div>
+      
+      <div class="skills-wrapper">
+        <div class="skills-orbit" id="skillsOrbit">
+          <div class="orbit-center">
+            <span class="center-icon pulse-scale">⚡</span>
+            <div class="center-ring ring-1 rotate-slow"></div>
+            <div class="center-ring ring-2 rotate-slow-reverse"></div>
+            <div class="center-ring ring-3 rotate-medium"></div>
+          </div>
+          
+          <div class="skill-planet planet-1 orbit-path-1">
+            <div class="planet-content hover-glow">
+              <span class="planet-icon">🛡️</span>
+              <span class="planet-label">Security</span>
+            </div>
+          </div>
+          <div class="skill-planet planet-2 orbit-path-2">
+            <div class="planet-content hover-glow">
+              <span class="planet-icon">💻</span>
+              <span class="planet-label">Frontend</span>
+            </div>
+          </div>
+          <div class="skill-planet planet-3 orbit-path-3">
+            <div class="planet-content hover-glow">
+              <span class="planet-icon">⚙️</span>
+              <span class="planet-label">Backend</span>
+            </div>
+          </div>
+          <div class="skill-planet planet-4 orbit-path-4">
+            <div class="planet-content hover-glow">
+              <span class="planet-icon">🤖</span>
+              <span class="planet-label">AI/ML</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="skills-list">
+          <div class="skill-category reveal-slide" style="--delay: 0.1s">
+            <h3 class="category-title">
+              <span class="category-icon bounce-hover">🛡️</span>
+              <span>Security</span>
+            </h3>
+            <div class="skill-bars">
+              <div class="skill-bar" data-skill="Penetration Testing" data-level="90">
+                <div class="bar-info">
+                  <span class="bar-name">Penetration Testing</span>
+                  <span class="bar-percent">90%</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill fill-animate"></div>
+                  <div class="bar-glow"></div>
+                </div>
+              </div>
+              <div class="skill-bar" data-skill="Network Security" data-level="85">
+                <div class="bar-info">
+                  <span class="bar-name">Network Security</span>
+                  <span class="bar-percent">85%</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill fill-animate"></div>
+                  <div class="bar-glow"></div>
+                </div>
+              </div>
+              <div class="skill-bar" data-skill="Cryptography" data-level="80">
+                <div class="bar-info">
+                  <span class="bar-name">Cryptography</span>
+                  <span class="bar-percent">80%</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill fill-animate"></div>
+                  <div class="bar-glow"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="skill-category reveal-slide" style="--delay: 0.2s">
+            <h3 class="category-title">
+              <span class="category-icon bounce-hover">💻</span>
+              <span>Development</span>
+            </h3>
+            <div class="skill-tags">
+              <span class="skill-tag tag-pop" style="--i: 0">JavaScript</span>
+              <span class="skill-tag tag-pop" style="--i: 1">TypeScript</span>
+              <span class="skill-tag tag-pop" style="--i: 2">React</span>
+              <span class="skill-tag tag-pop" style="--i: 3">Node.js</span>
+              <span class="skill-tag tag-pop" style="--i: 4">Python</span>
+              <span class="skill-tag tag-pop" style="--i: 5">Next.js</span>
+              <span class="skill-tag tag-pop" style="--i: 6">HTML/CSS</span>
+              <span class="skill-tag tag-pop" style="--i: 7">SQL</span>
+            </div>
+          </div>
+          
+          <div class="skill-category reveal-slide" style="--delay: 0.3s">
+            <h3 class="category-title">
+              <span class="category-icon bounce-hover">🔧</span>
+              <span>Tools & Platforms</span>
+            </h3>
+            <div class="skill-tags">
+              <span class="skill-tag tag-pop" style="--i: 0">Git</span>
+              <span class="skill-tag tag-pop" style="--i: 1">Docker</span>
+              <span class="skill-tag tag-pop" style="--i: 2">AWS</span>
+              <span class="skill-tag tag-pop" style="--i: 3">Linux</span>
+              <span class="skill-tag tag-pop" style="--i: 4">CI/CD</span>
+              <span class="skill-tag tag-pop" style="--i: 5">Kubernetes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="projects section">
+    <div class="container">
+      <div class="section-header center">
+        <span class="section-tag reveal-fade">Portfolio</span>
+        <h2 class="section-title reveal-slide">
+          Featured <span class="gradient-text-animate">Projects</span>
+        </h2>
+        <p class="section-description reveal-fade">
+          A showcase of my recent work
+        </p>
+      </div>
+      
+      <div class="projects-filter reveal-fade">
+        <button class="filter-btn active magnetic-hover" data-filter="all">All</button>
+        <button class="filter-btn magnetic-hover" data-filter="security">Security</button>
+        <button class="filter-btn magnetic-hover" data-filter="web">Web Dev</button>
+        <button class="filter-btn magnetic-hover" data-filter="ai">AI/ML</button>
+      </div>
+      
+      <div class="projects-grid" id="projectsGrid">
+        <article class="project-card reveal-scale hover-3d" data-category="security">
+          <div class="project-image">
+            <div class="image-placeholder gradient-mesh">
+              <span class="placeholder-icon">🔐</span>
+            </div>
+            <div class="project-overlay">
+              <div class="overlay-content slide-up-content">
+                <a href="#" class="project-link magnetic-hover" aria-label="View project">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+                  </svg>
+                </a>
+                <a href="#" class="project-link magnetic-hover" aria-label="View code">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div class="image-glitch"></div>
+          </div>
+          <div class="project-info">
+            <span class="project-category text-shimmer">Cybersecurity</span>
+            <h3 class="project-title">Security Scanner Tool</h3>
+            <p class="project-description">Advanced vulnerability detection system with AI-powered threat analysis.</p>
+            <div class="project-tech">
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">ML</span>
+              <span class="tech-tag">Docker</span>
+            </div>
+          </div>
+          <div class="card-border animated-border"></div>
+        </article>
+
+        <article class="project-card reveal-scale hover-3d" data-category="web">
+          <div class="project-image">
+            <div class="image-placeholder gradient-mesh" style="--gradient-start: var(--purple); --gradient-end: var(--pink)">
+              <span class="placeholder-icon">🌐</span>
+            </div>
+            <div class="project-overlay">
+              <div class="overlay-content slide-up-content">
+                <a href="#" class="project-link magnetic-hover" aria-label="View project">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+                  </svg>
+                </a>
+                <a href="#" class="project-link magnetic-hover" aria-label="View code">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div class="image-glitch"></div>
+          </div>
+          <div class="project-info">
+            <span class="project-category text-shimmer">Web Development</span>
+            <h3 class="project-title">E-Commerce Platform</h3>
+            <p class="project-description">Full-featured online store with payment integration and admin dashboard.</p>
+            <div class="project-tech">
+              <span class="tech-tag">React</span>
+              <span class="tech-tag">Node.js</span>
+              <span class="tech-tag">MongoDB</span>
+            </div>
+          </div>
+          <div class="card-border animated-border"></div>
+        </article>
+
+        <article class="project-card reveal-scale hover-3d" data-category="ai">
+          <div class="project-image">
+            <div class="image-placeholder gradient-mesh" style="--gradient-start: var(--green); --gradient-end: var(--cyan)">
+              <span class="placeholder-icon">🤖</span>
+            </div>
+            <div class="project-overlay">
+              <div class="overlay-content slide-up-content">
+                <a href="#" class="project-link magnetic-hover" aria-label="View project">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+                  </svg>
+                </a>
+                <a href="#" class="project-link magnetic-hover" aria-label="View code">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div class="image-glitch"></div>
+          </div>
+          <div class="project-info">
+            <span class="project-category text-shimmer">AI/ML</span>
+            <h3 class="project-title">AI Chatbot Assistant</h3>
+            <p class="project-description">Intelligent conversational AI with NLP capabilities and context awareness.</p>
+            <div class="project-tech">
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">TensorFlow</span>
+              <span class="tech-tag">FastAPI</span>
+            </div>
+          </div>
+          <div class="card-border animated-border"></div>
+        </article>
+
+        <article class="project-card reveal-scale hover-3d" data-category="security">
+          <div class="project-image">
+            <div class="image-placeholder gradient-mesh" style="--gradient-start: var(--orange); --gradient-end: var(--red)">
+              <span class="placeholder-icon">🔥</span>
+            </div>
+            <div class="project-overlay">
+              <div class="overlay-content slide-up-content">
+                <a href="#" class="project-link magnetic-hover" aria-label="View project">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+                  </svg>
+                </a>
+                <a href="#" class="project-link magnetic-hover" aria-label="View code">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div class="image-glitch"></div>
+          </div>
+          <div class="project-info">
+            <span class="project-category text-shimmer">Cybersecurity</span>
+            <h3 class="project-title">Firewall Manager</h3>
+            <p class="project-description">Enterprise-grade firewall configuration and monitoring dashboard.</p>
+            <div class="project-tech">
+              <span class="tech-tag">Go</span>
+              <span class="tech-tag">React</span>
+              <span class="tech-tag">PostgreSQL</span>
+            </div>
+          </div>
+          <div class="card-border animated-border"></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact section">
+    <div class="container">
+      <div class="section-header center">
+        <span class="section-tag reveal-fade">Get In Touch</span>
+        <h2 class="section-title reveal-slide">
+          Let's <span class="gradient-text-animate">Connect</span>
+        </h2>
+        <p class="section-description reveal-fade">
+          Have a project in mind? Let's discuss how I can help.
+        </p>
+      </div>
+      
+      <div class="contact-grid">
+        <div class="contact-info reveal-slide">
+          <div class="info-card hover-3d">
+            <div class="info-icon bounce-hover">📧</div>
+            <h4>Email</h4>
+            <a href="mailto:hello@anshidkt.in" class="info-link hover-underline">hello@anshidkt.in</a>
+          </div>
+          <div class="info-card hover-3d">
+            <div class="info-icon bounce-hover">📍</div>
+            <h4>Location</h4>
+            <span class="info-text">Kerala, India</span>
+          </div>
+          <div class="info-card hover-3d">
+            <div class="info-icon bounce-hover">💼</div>
+            <h4>Status</h4>
+            <span class="info-text status-available">
+              <span class="status-dot pulse-dot"></span>
+              Available for work
+            </span>
+          </div>
+          
+          <div class="social-links">
+            <a href="#" class="social-link magnetic-hover" aria-label="GitHub">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link magnetic-hover" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link magnetic-hover" aria-label="Twitter">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link magnetic-hover" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <form class="contact-form reveal-slide" id="contactForm">
+          <div class="form-group">
+            <input type="text" id="name" name="name" class="form-input" required>
+            <label for="name" class="form-label">Your Name</label>
+            <div class="input-line"></div>
+            <div class="input-highlight"></div>
+          </div>
+          <div class="form-group">
+            <input type="email" id="email" name="email" class="form-input" required>
+            <label for="email" class="form-label">Your Email</label>
+            <div class="input-line"></div>
+            <div class="input-highlight"></div>
+          </div>
+          <div class="form-group">
+            <input type="text" id="subject" name="subject" class="form-input" required>
+            <label for="subject" class="form-label">Subject</label>
+            <div class="input-line"></div>
+            <div class="input-highlight"></div>
+          </div>
+          <div class="form-group">
+            <textarea id="message" name="message" class="form-input form-textarea" rows="5" required></textarea>
+            <label for="message" class="form-label">Your Message</label>
+            <div class="input-line"></div>
+            <div class="input-highlight"></div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full magnetic-hover">
+            <span class="btn-content">
+              <span class="btn-text">Send Message</span>
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+              </svg>
+            </span>
+            <div class="btn-bg"></div>
+            <div class="btn-loader">
+              <span class="loader-dot"></span>
+              <span class="loader-dot"></span>
+              <span class="loader-dot"></span>
+            </div>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-glow"></div>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <a href="#home" class="footer-logo magnetic-hover">
+            <span class="logo-bracket">[</span>
+            <span class="logo-text">ANSHID</span>
+            <span class="logo-bracket">]</span>
+          </a>
+          <p class="footer-tagline text-shimmer">Building the future, one line of code at a time.</p>
+        </div>
+        
+        <div class="footer-nav">
+          <a href="#home" class="footer-link hover-underline">Home</a>
+          <a href="#about" class="footer-link hover-underline">About</a>
+          <a href="#services" class="footer-link hover-underline">Services</a>
+          <a href="#projects" class="footer-link hover-underline">Projects</a>
+          <a href="#contact" class="footer-link hover-underline">Contact</a>
+        </div>
+        
+        <div class="footer-bottom">
+          <p class="copyright">© 2024 Anshid KT. All rights reserved.</p>
+          <button class="back-to-top magnetic-hover" id="backToTop" aria-label="Back to top">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 19V5M5 12l7-7 7 7"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./assets/js/main.js"></script>
+</body>
 </html>
