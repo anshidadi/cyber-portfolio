@@ -769,28 +769,24 @@
         
         <form class="contact-form reveal-slide" id="contactForm">
           <div class="form-group">
-            <input type="text" id="name" name="name" class="form-input" required>
+            <input type="text" id="name" name="name" class="form-input" placeholder=" " required>
             <label for="name" class="form-label">Your Name</label>
             <div class="input-line"></div>
-            <div class="input-highlight"></div>
           </div>
           <div class="form-group">
-            <input type="email" id="email" name="email" class="form-input" required>
+            <input type="email" id="email" name="email" class="form-input" placeholder=" " required>
             <label for="email" class="form-label">Your Email</label>
             <div class="input-line"></div>
-            <div class="input-highlight"></div>
           </div>
           <div class="form-group">
-            <input type="text" id="subject" name="subject" class="form-input" required>
+            <input type="text" id="subject" name="subject" class="form-input" placeholder=" " required>
             <label for="subject" class="form-label">Subject</label>
             <div class="input-line"></div>
-            <div class="input-highlight"></div>
           </div>
           <div class="form-group">
-            <textarea id="message" name="message" class="form-input form-textarea" rows="5" required></textarea>
+            <textarea id="message" name="message" class="form-input form-textarea" rows="5" placeholder=" " required></textarea>
             <label for="message" class="form-label">Your Message</label>
             <div class="input-line"></div>
-            <div class="input-highlight"></div>
           </div>
           <button type="submit" class="btn btn-primary btn-full magnetic-hover">
             <span class="btn-content">
@@ -834,7 +830,7 @@
         </div>
         
         <div class="footer-bottom">
-          <p class="copyright">© 2024 Anshid KT. All rights reserved.</p>
+          <p class="copyright">© <span id="currentYear">2024</span> Anshid KT. All rights reserved.</p>
           <button class="back-to-top magnetic-hover" id="backToTop" aria-label="Back to top">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M12 19V5M5 12l7-7 7 7"/>
@@ -846,25 +842,4 @@
   </footer>
 
   <script src="./assets/js/main.js"></script>
-  <script>
-    // Failsafe counter animation
-    window.addEventListener('load', function() {
-      setTimeout(function() {
-        document.querySelectorAll('.stat-number, .counter, .exp-number').forEach(function(el) {
-          if (el.textContent === '0' || el.textContent === 'NaN') {
-            var target = parseInt(el.getAttribute('data-target') || el.getAttribute('data-count') || '0');
-            if (!target || isNaN(target)) return;
-            var start = performance.now();
-            function animate(now) {
-              var p = Math.min((now - start) / 2000, 1);
-              el.textContent = Math.floor(p * target);
-              if (p < 1) requestAnimationFrame(animate);
-              else el.textContent = target;
-            }
-            requestAnimationFrame(animate);
-          }
-        });
-      }, 3000);
-    });
-  </script>
 </html>
