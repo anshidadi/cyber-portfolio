@@ -27,7 +27,7 @@
   const sliderDots = document.querySelectorAll('.slider-dots .dot');
   const prevBtn = document.querySelector('.slider-btn.prev');
   const nextBtn = document.querySelector('.slider-btn.next');
-  const statNumbers = document.querySelectorAll('.stat-number');
+  const statNumbers = document.querySelectorAll('.stat-number, .counter');
   const tiltElements = document.querySelectorAll('[data-tilt]');
   const revealElements = document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right');
 
@@ -306,33 +306,38 @@
   // Animated Counters
   // ============================================
   function animateCounters() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const counter = entry.target;
-          const target = parseInt(counter.getAttribute('data-count'));
-          const duration = 2000;
-          const start = 0;
-          const increment = target / (duration / 16);
-          let current = start;
-
-          const updateCounter = () => {
-            current += increment;
-            if (current < target) {
-              counter.textContent = Math.floor(current);
-              requestAnimationFrame(updateCounter);
-            } else {
-              counter.textContent = target;
-            }
-          };
-
-          updateCounter();
-          observer.unobserve(counter);
+    const counters = document.querySelectorAll('.stat-number, .counter, .exp-number');
+    counters.forEach(counter => {
+      const target = parseInt(counter.getAttribute('data-target') || counter.getAttribute('data-count') || '0');
+      if (isNaN(target) || target === 0) return;
+      
+      const duration = 2000;
+      const startTime = performance.now();
+      
+      const updateCounter = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        counter.textContent = Math.floor(eased * target);
+        
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          counter.textContent = target;
         }
-      });
-    }, { threshold: 0.5 });
-
-    statNumbers.forEach(counter => observer.observe(counter));
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            requestAnimationFrame(updateCounter);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      
+      observer.observe(counter);
+    });
   }
 
   // ============================================
